@@ -54,7 +54,23 @@ export function createServer() {
     next();
   });
 
-  // Example API routes
+  // Diagnostic endpoint to check server health
+  app.get("/api/health", (_req, res) => {
+    const env = {
+      supabaseUrl: process.env.SUPABASE_URL ? '✅ Set' : '❌ Missing',
+      supabaseKey: process.env.SUPABASE_SERVICE_ROLE_KEY ? '✅ Set' : '❌ Missing',
+      nodeEnv: process.env.NODE_ENV || 'development',
+      viteUrl: process.env.VITE_SUPABASE_URL ? '✅ Set' : '❌ Missing',
+      viteKey: process.env.VITE_SUPABASE_ANON_KEY ? '✅ Set' : '❌ Missing',
+    };
+    res.json({ 
+      status: 'ok',
+      message: 'Server is running',
+      environment: env,
+      timestamp: new Date().toISOString()
+    });
+  });
+
   app.get("/api/ping", (_req, res) => {
     const ping = process.env.PING_MESSAGE ?? "ping";
     res.json({ message: ping });
