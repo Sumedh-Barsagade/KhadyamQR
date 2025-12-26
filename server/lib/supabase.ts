@@ -23,6 +23,12 @@ if (!serviceKey) {
 // Create Supabase client with enhanced error handling
 export const supabaseAdmin = (() => {
   try {
+    if (!url || !serviceKey) {
+      throw new Error(
+        `Supabase configuration incomplete. URL: ${!!url}, Key: ${!!serviceKey}`
+      );
+    }
+    
     const client = createClient(url, serviceKey, {
       auth: {
         persistSession: false,
@@ -30,23 +36,25 @@ export const supabaseAdmin = (() => {
       },
     });
     
-    // Test the connection
+    console.log('✅ Supabase client initialized successfully');
+    console.log('📍 Supabase URL:', url);
+    
     // Test the connection
     (async () => {
       try {
         const { error } = await client.from('restaurants').select('*').limit(1);
         if (error) {
-          console.error('Supabase connection test failed:', error);
+          console.error('❌ Supabase connection test failed:', error.message, error.code);
           if (error.code === '42501') {
             console.error('Permission denied. Please check if your service role key has the correct permissions.');
           } else if (error.code === '42P01') {
             console.error('Table not found. Please ensure the "restaurants" table exists in your Supabase database.');
           }
         } else {
-          // Successfully connected to Supabase
+          console.log('✅ Successfully connected to Supabase');
         }
       } catch (err) {
-        console.error('Error testing Supabase connection:', err);
+        console.error('❌ Error testing Supabase connection:', err);
         if (err instanceof Error) {
           console.error('Error details:', {
             message: err.message,
