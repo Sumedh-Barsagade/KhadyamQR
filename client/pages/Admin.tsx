@@ -173,29 +173,29 @@ export default function Admin() {
     try {
       setLoading(true);
       const baseUrl = getBaseUrl();
-  // fetching restaurants
+      console.log('📡 Fetching restaurants from:', `${baseUrl}/api/restaurants`);
       
       const resp = await fetch(`${baseUrl}/api/restaurants`, {
         headers: {
           'Content-Type': 'application/json',
         },
-        credentials: 'include', // Important for cookies/auth
+        credentials: 'include',
       });
       
-  // response status available in resp.status
+      console.log('📊 Response status:', resp.status);
       
       if (!resp.ok) {
         const errorText = await resp.text();
-        console.error('Error response:', errorText);
+        console.error('❌ Error response:', errorText);
         throw new Error(`HTTP error! status: ${resp.status}, message: ${errorText}`);
       }
       
       const data = (await resp.json()) as Restaurant[];
-  // fetched restaurants data
+      console.log('✅ Restaurants fetched:', data.length, 'items');
       setRestaurants(data);
     } catch (e) {
-      console.error('Error in fetchRestaurants:', e);
-      alert('Failed to fetch restaurants. Check console for details.');
+      console.error('❌ Error in fetchRestaurants:', e);
+      alert(`Failed to fetch restaurants:\n\n${e instanceof Error ? e.message : String(e)}\n\nPlease check the browser console for more details.`);
     } finally {
       setLoading(false);
     }
