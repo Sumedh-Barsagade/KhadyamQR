@@ -1,4 +1,3 @@
-import "dotenv/config";
 import express from "express";
 import cors from "cors";
 import { handleDemo } from "./routes/demo";
@@ -27,12 +26,13 @@ export function createServer() {
   } else {
     // In production, only allow specific origins
     const allowedOrigins = [
-      'https://your-production-domain.com',
+      'https://khadyam-qr.netlify.app',
       // Add other production domains here
     ];
 
     app.use(cors({
       origin: function(origin, callback) {
+        // Allow requests with no origin (mobile apps, Postman, etc.)
         if (!origin || allowedOrigins.includes(origin)) {
           return callback(null, true);
         }

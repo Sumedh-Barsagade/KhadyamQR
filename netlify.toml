@@ -4,7 +4,6 @@
   publish = "dist"
 
 [functions]
-  external_node_modules = ["express"]
   node_bundler = "esbuild"
 
 # Handle API requests
@@ -13,10 +12,3 @@
   from = "/api/*"
   status = 200
   to = "/.netlify/functions/api/:splat"
-
-# Handle Single Page Application routing
-[[redirects]]
-  from = "/*"
-  to = "/index.html"
-  status = 200
-  force = true
