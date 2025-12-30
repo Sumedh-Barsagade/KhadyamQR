@@ -105,9 +105,9 @@ export function createServer() {
   app.use("/api/contact", contactRouter);
 
   // Error handling
-  app.use((err: Error, _req: express.Request, res: express.Response, _next: express.NextFunction) => {
+  app.use((err: Error, _req: express.Request, res: any, _next: express.NextFunction) => {
     console.error(err.stack);
-    return (res as any).status(500).json({ error: 'Something went wrong!' });
+    return res.status(500).json({ error: 'Something went wrong!' });
   });
 
   // Handle 404
