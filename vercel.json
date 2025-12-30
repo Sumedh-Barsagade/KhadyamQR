@@ -1,13 +1,7 @@
 {
-  "buildCommand": "pnpm install && pnpm run build",
-  "outputDirectory": "dist/spa",
+  "buildCommand": "pnpm install && pnpm run build:client",
+  "outputDirectory": "dist",
   "framework": "vite",
-  "env": [
-    "VITE_SUPABASE_URL",
-    "VITE_SUPABASE_ANON_KEY",
-    "SUPABASE_URL",
-    "SUPABASE_SERVICE_ROLE_KEY"
-  ],
   "rewrites": [
     {
       "source": "/(.*)",
