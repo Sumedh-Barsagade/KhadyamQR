@@ -20,7 +20,7 @@ router.post('/', async (req: any, res: any) => {
     const validation = contactSchema.safeParse(req.body);
     
     if (!validation.success) {
-      return (res as any).status(400).json({
+      return res.status(400).json({
         success: false,
         message: 'Validation failed',
         errors: validation.error.errors,
