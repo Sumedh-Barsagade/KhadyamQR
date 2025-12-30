@@ -118,14 +118,14 @@ router.post('/', async (req: any, res: any) => {
       `
     });
 
-    return (res as any).status(200).json({
+    return res.status(200).json({
       success: true,
       message: 'Your message has been sent successfully!',
     });
   } catch (err) {
     console.error('Error processing contact form:', err);
     const errorMessage = err instanceof Error ? err.message : String(err);
-    return (res as any).status(500).json({
+    return res.status(500).json({
       success: false,
       message: 'Failed to send message. Please try again later.',
       error: process.env.NODE_ENV === 'development' ? errorMessage : undefined,
