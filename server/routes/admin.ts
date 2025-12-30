@@ -184,7 +184,7 @@ export const createRestaurant: RequestHandler = async (req: any, res: any) => {
   }
 };
 
-export const uploadQrAndSave: RequestHandler = async (req, res) => {
+export const uploadQrAndSave: RequestHandler = async (req: any, res: any) => {
   const { slug, restaurant_id, qr_base64 } = req.body as {
     slug: string;
     restaurant_id: string;
