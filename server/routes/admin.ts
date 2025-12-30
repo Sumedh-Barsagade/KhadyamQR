@@ -336,7 +336,7 @@ export const toggleRestaurantStatus: RequestHandler = async (req: any, res: any)
   res.json({ success: true, active });
 };
 
-export const createRestaurantLogin: RequestHandler = async (req, res) => {
+export const createRestaurantLogin: RequestHandler = async (req: any, res: any) => {
   const { restaurant_id, email, password } = req.body as {
     restaurant_id: string;
     email: string;
