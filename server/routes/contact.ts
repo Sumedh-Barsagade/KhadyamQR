@@ -14,7 +14,7 @@ const contactSchema = z.object({
 });
 
 // POST /api/contact
-router.post('/', async (req: Request, res: Response) => {
+router.post('/', async (req: any, res: any) => {
   try {
     // Validate request body
     const validation = contactSchema.safeParse(req.body);
