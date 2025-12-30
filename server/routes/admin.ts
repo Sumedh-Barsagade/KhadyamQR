@@ -83,7 +83,7 @@ export const listRestaurants: RequestHandler = async (_req, res: any) => {
   }
 };
 
-export const createRestaurant: RequestHandler = async (req, res) => {
+export const createRestaurant: RequestHandler = async (req: any, res: any) => {
   try {
     const { name, slug, logo_base64 } = req.body as {
       name: string;
