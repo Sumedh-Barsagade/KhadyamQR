@@ -239,7 +239,7 @@ export const deleteRestaurant: RequestHandler = async (req: any, res: any) => {
   res.json({ success: true });
 };
 
-export const resetRestaurantPassword: RequestHandler = async (req, res) => {
+export const resetRestaurantPassword: RequestHandler = async (req: any, res: any) => {
   const { email, new_password } = req.body as {
     email: string;
     new_password: string;
