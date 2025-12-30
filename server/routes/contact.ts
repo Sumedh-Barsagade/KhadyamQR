@@ -1,4 +1,4 @@
-import { Router, type Request, type Response } from 'express';
+import { Router } from 'express';
 import { sendEmail } from '../lib/email';
 import { z } from 'zod';
 
