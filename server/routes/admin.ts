@@ -1,7 +1,7 @@
 import type { RequestHandler } from "express";
 import { supabaseAdmin } from "../lib/supabase";
 
-export const listRestaurants: RequestHandler = async (_req, res) => {
+export const listRestaurants: RequestHandler = async (_req, res: any) => {
   // listRestaurants: start
 
   try {
