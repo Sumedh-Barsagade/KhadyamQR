@@ -298,7 +298,7 @@ export const resetRestaurantPassword: RequestHandler = async (req, res) => {
 
     // Update the user's password using the admin API with the user ID
     const { data: authData, error: authError } =
-      await supabaseAdmin.auth.admin.updateUserById(authUser.id, {
+      await (supabaseAdmin.auth as any).admin.updateUserById(authUser.id, {
         password: new_password,
       });
 
