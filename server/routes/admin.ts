@@ -321,7 +321,7 @@ export const resetRestaurantPassword: RequestHandler = async (req: any, res: any
   }
 };
 
-export const toggleRestaurantStatus: RequestHandler = async (req, res) => {
+export const toggleRestaurantStatus: RequestHandler = async (req: any, res: any) => {
   const { id } = req.params;
   const { active } = req.body as { active: boolean };
   if (!id) return res.status(400).json({ error: "id required" });
