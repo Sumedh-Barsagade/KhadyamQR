@@ -358,7 +358,7 @@ export const createRestaurantLogin: RequestHandler = async (req, res) => {
   try {
     // Create Supabase Auth user
     const { data: authData, error: authError } =
-      await supabaseAdmin.auth.admin.createUser({
+      await (supabaseAdmin.auth as any).admin.createUser({
         email,
         password,
         email_confirm: true,
