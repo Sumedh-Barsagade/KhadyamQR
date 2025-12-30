@@ -373,7 +373,7 @@ export const createRestaurantLogin: RequestHandler = async (req, res) => {
 
     if (dbError) {
       // Rollback: delete auth user if database insert fails
-      await supabaseAdmin.auth.admin.deleteUser(authData.user.id);
+      await (supabaseAdmin.auth as any).admin.deleteUser(authData.user.id);
       throw dbError;
     }
 
