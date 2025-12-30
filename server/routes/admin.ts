@@ -282,7 +282,7 @@ export const resetRestaurantPassword: RequestHandler = async (req, res) => {
     const {
       data: { users },
       error: listError,
-    } = await supabaseAdmin.auth.admin.listUsers();
+    } = await (supabaseAdmin.auth as any).admin.listUsers();
 
     if (listError || !users) {
       console.error("Error listing auth users:", listError);
