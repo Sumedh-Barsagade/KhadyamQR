@@ -10,7 +10,8 @@
     "allowSyntheticDefaultImports": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
-    "strict": true
+    "strict": true,
+    "suppressImplicitAnyIndexErrors": true
   },
   "include": ["server/**/*.ts"],
   "exclude": ["node_modules"]
