@@ -227,7 +227,7 @@ export const uploadQrAndSave: RequestHandler = async (req: any, res: any) => {
   res.json({ qr_url: pub.publicUrl });
 };
 
-export const deleteRestaurant: RequestHandler = async (req, res) => {
+export const deleteRestaurant: RequestHandler = async (req: any, res: any) => {
   const { id } = req.params;
   if (!id) return res.status(400).json({ error: "id required" });
 
