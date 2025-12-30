@@ -204,18 +204,58 @@ export default function Admin() {
 
   const handleAddRestaurant = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!name) return;
-    const slug = slugify(name, { lower: true, strict: true });
+    if (!name || !name.trim()) {
+      alert('Please enter a restaurant name');
+      return;
+    }
+    
+    const slug = slugify(name.trim(), { lower: true, strict: true });
+    
+    // Validate slug is not empty after slugification
+    if (!slug || slug.length === 0) {
+      alert('Invalid restaurant name. Please use letters, numbers, or common characters.');
+      return;
+    }
+    
     let logo_base64: string | undefined;
-    if (logoFile) logo_base64 = await fileToBase64(logoFile);
+    if (logoFile) {
+      try {
+        logo_base64 = await fileToBase64(logoFile);
+      } catch (err) {
+        alert('Failed to process logo image. Please try again.');
+        return;
+      }
+    }
+    
     try {
-      const resp = await fetch('/api/restaurants', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ name, slug, logo_base64 }) });
-      if (!resp.ok) throw new Error(await resp.text());
+      const resp = await fetch('/api/restaurants', { 
+        method: 'POST', 
+        headers: { 'Content-Type': 'application/json' }, 
+        body: JSON.stringify({ name: name.trim(), slug, logo_base64 }) 
+      });
+      
+      if (!resp.ok) {
+        const errorText = await resp.text();
+        let errorMessage = 'Failed to create restaurant';
+        
+        try {
+          const errorJson = JSON.parse(errorText);
+          errorMessage = errorJson.message || errorJson.error || errorMessage;
+        } catch {
+          errorMessage = errorText || errorMessage;
+        }
+        
+        throw new Error(errorMessage);
+      }
+      
+      const data = await resp.json();
+      console.log('✅ Restaurant created:', data);
       setName("");
       setLogoFile(null);
       await fetchRestaurants();
     } catch (err: any) {
-      alert(err?.message || 'Create failed');
+      console.error('❌ Error creating restaurant:', err);
+      alert(err?.message || 'Failed to create restaurant. Please try again.');
     }
   };
 

@@ -1,3 +1,8 @@
+import dotenv from "dotenv";
+
+// Load environment variables from .env file
+dotenv.config();
+
 import express from "express";
 import cors from "cors";
 import { handleDemo } from "./routes/demo";
@@ -27,6 +32,7 @@ export function createServer() {
     // In production, only allow specific origins
     const allowedOrigins = [
       'https://khadyam-qr.netlify.app',
+      // Add Vercel domain after deployment: 'https://your-app-name.vercel.app',
       // Add other production domains here
     ];
 
@@ -116,6 +122,30 @@ export const app = createServer();
 
 // Start the server
 const port = process.env.PORT || 3001; // Changed from 3000 to 3001 to match Vite proxy config
-app.listen(port, () => {
-  // server is running
-});
+
+try {
+  app.listen(port, () => {
+    console.log(`🚀 Server running on http://localhost:${port}`);
+    console.log(`📡 API endpoints available at http://localhost:${port}/api/*`);
+    
+    // Check environment variables
+    const hasSupabaseUrl = !!(process.env.SUPABASE_URL || process.env.VITE_SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL);
+    const hasServiceKey = !!process.env.SUPABASE_SERVICE_ROLE_KEY;
+    
+    if (!hasSupabaseUrl || !hasServiceKey) {
+      console.warn('');
+      console.warn('⚠️  WARNING: Supabase environment variables are missing!');
+      console.warn('   The server will start, but database operations will fail.');
+      console.warn('   Please create a .env file with:');
+      console.warn('   - SUPABASE_URL or VITE_SUPABASE_URL');
+      console.warn('   - SUPABASE_SERVICE_ROLE_KEY');
+      console.warn('');
+    }
+  });
+} catch (error) {
+  console.error('❌ Failed to start server:', error);
+  if (error instanceof Error) {
+    console.error('Error details:', error.message);
+  }
+  process.exit(1);
+}

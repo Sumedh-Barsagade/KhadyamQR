@@ -11,9 +11,10 @@ export const listRestaurants: RequestHandler = async (_req, res) => {
     // Add a small delay to ensure logs are visible
     await new Promise((resolve) => setTimeout(resolve, 100));
 
+    // Try to select active column, but handle gracefully if it doesn't exist
     const { data, error } = await supabaseAdmin
       .from("restaurants")
-      .select("id,name,slug,logo_url,qr_url,active,created_at")
+      .select("id,name,slug,logo_url,qr_url,created_at,active")
       .order("created_at", { ascending: false });
 
     // supabase response status available
@@ -54,8 +55,14 @@ export const listRestaurants: RequestHandler = async (_req, res) => {
       });
     }
 
+    // Add active field if column exists (for backward compatibility)
+    const dataWithActive = (data || []).map((restaurant: any) => ({
+      ...restaurant,
+      active: restaurant.active !== undefined ? restaurant.active : true,
+    }));
+
     // fetched restaurants count
-    return res.json(data || []);
+    return res.json(dataWithActive);
   } catch (err) {
     console.error("🔥 [listRestaurants] Unexpected error:", err);
 
@@ -77,35 +84,104 @@ export const listRestaurants: RequestHandler = async (_req, res) => {
 };
 
 export const createRestaurant: RequestHandler = async (req, res) => {
-  const { name, slug, logo_base64 } = req.body as {
-    name: string;
-    slug: string;
-    logo_base64?: string;
-  };
-  if (!name || !slug)
-    return res.status(400).json({ error: "name and slug required" });
+  try {
+    const { name, slug, logo_base64 } = req.body as {
+      name: string;
+      slug: string;
+      logo_base64?: string;
+    };
+    
+    // Validate input
+    if (!name || !name.trim()) {
+      return res.status(400).json({ error: "Restaurant name is required" });
+    }
+    
+    if (!slug || !slug.trim()) {
+      return res.status(400).json({ error: "Restaurant slug is required" });
+    }
 
-  let logo_url: string | null = null;
-  if (logo_base64) {
-    const buffer = Buffer.from(logo_base64.split(",").pop() || "", "base64");
-    const path = `logos/${slug}/logo.png`;
-    const { error: upErr } = await supabaseAdmin.storage
-      .from("khadyamqr")
-      .upload(path, buffer, { upsert: true, contentType: "image/png" });
-    if (upErr) return res.status(500).json({ error: upErr.message });
-    const { data: pub } = supabaseAdmin.storage
-      .from("khadyamqr")
-      .getPublicUrl(path);
-    logo_url = pub.publicUrl;
+    let logo_url: string | null = null;
+    if (logo_base64) {
+      try {
+        const buffer = Buffer.from(logo_base64.split(",").pop() || "", "base64");
+        const path = `logos/${slug}/logo.png`;
+        const { error: upErr } = await supabaseAdmin.storage
+          .from("khadyamqr")
+          .upload(path, buffer, { upsert: true, contentType: "image/png" });
+        if (upErr) {
+          console.error("❌ [createRestaurant] Storage upload error:", upErr);
+          return res.status(500).json({ 
+            error: "Failed to upload logo", 
+            details: upErr.message 
+          });
+        }
+        const { data: pub } = supabaseAdmin.storage
+          .from("khadyamqr")
+          .getPublicUrl(path);
+        logo_url = pub.publicUrl;
+      } catch (uploadErr) {
+        console.error("❌ [createRestaurant] Logo upload exception:", uploadErr);
+        return res.status(500).json({ 
+          error: "Failed to process logo image",
+          details: uploadErr instanceof Error ? uploadErr.message : String(uploadErr)
+        });
+      }
+    }
+
+    // Insert restaurant with active field (defaults to true if column exists)
+    const { data, error } = await supabaseAdmin
+      .from("restaurants")
+      .insert({ name: name.trim(), slug: slug.trim(), logo_url, active: true })
+      .select("*")
+      .single();
+      
+    if (error) {
+      console.error("❌ [createRestaurant] Database error:", {
+        message: error.message,
+        code: error.code,
+        details: error.details,
+        hint: error.hint,
+      });
+      
+      // Handle specific error cases
+      if (error.code === "23505") { // Unique violation
+        return res.status(409).json({ 
+          error: "Restaurant with this name already exists",
+          message: `A restaurant with the slug "${slug}" already exists. Please choose a different name.`,
+          code: error.code
+        });
+      }
+      
+      if (error.code === "42P01") { // Table doesn't exist
+        return res.status(500).json({ 
+          error: "Database table not found",
+          message: "The restaurants table does not exist. Please run the database migrations.",
+          code: error.code
+        });
+      }
+      
+      return res.status(500).json({ 
+        error: "Failed to create restaurant",
+        message: error.message,
+        code: error.code
+      });
+    }
+    
+    // Ensure active field is set for response
+    const responseData = {
+      ...data,
+      active: data.active !== undefined ? data.active : true,
+    };
+    
+    res.json(responseData);
+  } catch (err) {
+    console.error("🔥 [createRestaurant] Unexpected error:", err);
+    const errorMessage = err instanceof Error ? err.message : "Unknown error occurred";
+    return res.status(500).json({ 
+      error: "Internal server error",
+      message: errorMessage
+    });
   }
-
-  const { data, error } = await supabaseAdmin
-    .from("restaurants")
-    .insert({ name, slug, logo_url })
-    .select("*")
-    .single();
-  if (error) return res.status(500).json({ error: error.message });
-  res.json(data);
 };
 
 export const uploadQrAndSave: RequestHandler = async (req, res) => {
