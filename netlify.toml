@@ -2,12 +2,6 @@
   command = "pnpm install && pnpm run build:client"
   publish = "dist"
 
-# SPA routing - handle client-side routing
-[[redirects]]
-  from = "/*"
-  to = "/index.html"
-  status = 200
-
 # Cache control for assets
 [[headers]]
   for = "/assets/*"
@@ -18,3 +12,5 @@
   for = "/"
   [headers.values]
     Cache-Control = "public, max-age=0, must-revalidate"
+
+# Note: SPA routing is handled by _redirects file
