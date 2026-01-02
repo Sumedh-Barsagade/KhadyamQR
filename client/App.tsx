@@ -36,7 +36,7 @@ const App = () => (
     <TooltipProvider>
       <Toaster />
       <Sonner position="top-center" richColors closeButton />
-      <BrowserRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
+      <BrowserRouter future={{ v7_startTransition: true }}>
         <Routes>
           <Route element={<MainLayout />}>
             <Route path="/" element={<Index />} />

@@ -2,9 +2,9 @@
   "extends": "./tsconfig.json",
   "compilerOptions": {
     "outDir": "./dist/server",
-    "rootDir": "./server",
+    "rootDir": "./",
     "moduleResolution": "node",
-    "module": "commonjs",
+    "module": "es2020",
     "target": "es2020",
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
@@ -12,6 +12,6 @@
     "forceConsistentCasingInFileNames": true,
     "strict": true
   },
-  "include": ["server/**/*.ts"],
-  "exclude": ["node_modules"]
+  "include": ["server/**/*.ts", "shared/**/*.ts"],
+  "exclude": ["node_modules", "client/**/*"]
 }

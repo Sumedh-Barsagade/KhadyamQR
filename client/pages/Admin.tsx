@@ -173,29 +173,29 @@ export default function Admin() {
     try {
       setLoading(true);
       const baseUrl = getBaseUrl();
-      console.log('📡 Fetching restaurants from:', `${baseUrl}/api/restaurants`);
+  // fetching restaurants
       
       const resp = await fetch(`${baseUrl}/api/restaurants`, {
         headers: {
           'Content-Type': 'application/json',
         },
-        credentials: 'include',
+        credentials: 'include', // Important for cookies/auth
       });
       
-      console.log('📊 Response status:', resp.status);
+  // response status available in resp.status
       
       if (!resp.ok) {
         const errorText = await resp.text();
-        console.error('❌ Error response:', errorText);
+        console.error('Error response:', errorText);
         throw new Error(`HTTP error! status: ${resp.status}, message: ${errorText}`);
       }
       
       const data = (await resp.json()) as Restaurant[];
-      console.log('✅ Restaurants fetched:', data.length, 'items');
+  // fetched restaurants data
       setRestaurants(data);
     } catch (e) {
-      console.error('❌ Error in fetchRestaurants:', e);
-      alert(`Failed to fetch restaurants:\n\n${e instanceof Error ? e.message : String(e)}\n\nPlease check the browser console for more details.`);
+      console.error('Error in fetchRestaurants:', e);
+      alert('Failed to fetch restaurants. Check console for details.');
     } finally {
       setLoading(false);
     }
@@ -204,58 +204,18 @@ export default function Admin() {
 
   const handleAddRestaurant = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!name || !name.trim()) {
-      alert('Please enter a restaurant name');
-      return;
-    }
-    
-    const slug = slugify(name.trim(), { lower: true, strict: true });
-    
-    // Validate slug is not empty after slugification
-    if (!slug || slug.length === 0) {
-      alert('Invalid restaurant name. Please use letters, numbers, or common characters.');
-      return;
-    }
-    
+    if (!name) return;
+    const slug = slugify(name, { lower: true, strict: true });
     let logo_base64: string | undefined;
-    if (logoFile) {
-      try {
-        logo_base64 = await fileToBase64(logoFile);
-      } catch (err) {
-        alert('Failed to process logo image. Please try again.');
-        return;
-      }
-    }
-    
+    if (logoFile) logo_base64 = await fileToBase64(logoFile);
     try {
-      const resp = await fetch('/api/restaurants', { 
-        method: 'POST', 
-        headers: { 'Content-Type': 'application/json' }, 
-        body: JSON.stringify({ name: name.trim(), slug, logo_base64 }) 
-      });
-      
-      if (!resp.ok) {
-        const errorText = await resp.text();
-        let errorMessage = 'Failed to create restaurant';
-        
-        try {
-          const errorJson = JSON.parse(errorText);
-          errorMessage = errorJson.message || errorJson.error || errorMessage;
-        } catch {
-          errorMessage = errorText || errorMessage;
-        }
-        
-        throw new Error(errorMessage);
-      }
-      
-      const data = await resp.json();
-      console.log('✅ Restaurant created:', data);
+      const resp = await fetch('/api/restaurants', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ name, slug, logo_base64 }) });
+      if (!resp.ok) throw new Error(await resp.text());
       setName("");
       setLogoFile(null);
       await fetchRestaurants();
     } catch (err: any) {
-      console.error('❌ Error creating restaurant:', err);
-      alert(err?.message || 'Failed to create restaurant. Please try again.');
+      alert(err?.message || 'Create failed');
     }
   };
 
