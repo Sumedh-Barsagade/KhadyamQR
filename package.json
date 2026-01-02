@@ -12,7 +12,7 @@
     "dev:client": "vite",
     "dev:server": "tsx watch server/index.ts",
     "build": "pnpm run build:client && pnpm run build:server",
-    "build:client": "vite build",
+    "build:client": "vite build && cp _redirects dist/_redirects",
     "build:server": "tsc -p tsconfig.server.json",
     "start": "NODE_ENV=production node dist/server/index.js",
     "test": "playwright test",
