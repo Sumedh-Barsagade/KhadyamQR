@@ -148,7 +148,7 @@ See [DEPLOY.md](./DEPLOY.md) for detailed instructions.
 
 ## License
 
-MIT
+Apache License 2.0
 
 ## Author
 
