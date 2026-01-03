@@ -63,17 +63,6 @@ git push -u origin main
 - Test: `https://your-site.netlify.app/admin`
 - QR codes will work at: `https://your-site.netlify.app/menu/[slug]`
 
-## Alternative: Deploy to Vercel
-
-1. Go to https://vercel.com/new
-2. Import `KhadyamQR` from GitHub
-3. **Framework Preset:** Vite
-4. **Build settings:**
-   - Build Command: `pnpm build`
-   - Output Directory: `dist/spa`
-5. Add same environment variables as above
-6. Deploy
-
 ## Step 4: Update QR Codes
 
 After deployment, regenerate QR codes in admin panel so they point to your production URL instead of `localhost:8080`.
