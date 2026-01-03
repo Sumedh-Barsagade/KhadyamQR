@@ -70,10 +70,10 @@ After deployment, regenerate QR codes in admin panel so they point to your produ
 ## Troubleshooting
 
 **Build fails: "pnpm not found"**
-- Netlify/Vercel auto-detects pnpm from `package.json` packageManager field
+- Netlify auto-detects pnpm from `package.json` packageManager field
 
 **API routes 404 in production**
-- Check `netlify.toml` or `vercel.json` for serverless function config
+- Check `netlify.toml` for serverless function configuration
 
 **Database connection fails**
 - Verify environment variables are set in deployment platform
