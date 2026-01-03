@@ -237,7 +237,7 @@
 ### Deployment Steps:
 1. Run database migrations in Supabase
 2. Push code to GitHub
-3. Deploy to Netlify/Vercel
+3. Deploy to Netlify
 4. Add environment variables
 5. Test in production
 6. Update DNS if needed
