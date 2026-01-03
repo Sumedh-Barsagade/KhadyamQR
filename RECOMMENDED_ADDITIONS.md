@@ -224,7 +224,7 @@ SUPABASE_SERVICE_ROLE_KEY=your_service_role_key_here
 
 ### 29. Performance Monitoring
 **Priority: LOW**
-**Tool:** Vercel Analytics or similar
+**Tool:** Web Vitals or Google Analytics
 **Why:** Track page load times, API response times
 
 ### 30. User Activity Logging
