@@ -36,12 +36,7 @@ git branch -M main
 git push -u origin main
 ```
 
-## Step 3: Deploy to Netlify (Recommended)
-
-### Why Netlify?
-- ✅ Free tier with serverless functions
-- ✅ Automatic deployments from GitHub
-- ✅ Built-in CI/CD
+## Step 3: Deploy to Netlify
 
 ### Steps:
 1. Go to https://app.netlify.com/start
