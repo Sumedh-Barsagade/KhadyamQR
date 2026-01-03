@@ -5,7 +5,7 @@
 - ✅ Local dev server running successfully
 - ⏳ Git repository (need to initialize)
 - ⏳ GitHub account
-- ⏳ Netlify or Vercel account
+- ⏳ Netlify account
 
 ## Step 1: Initialize Git
 
