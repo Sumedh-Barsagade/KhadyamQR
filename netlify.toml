@@ -1,6 +1,8 @@
 [build]
   command = "pnpm install && pnpm run build:client"
   publish = "dist"
+  # Skip secrets scanning for documentation files with false positives
+  environment = { SECRETS_SCAN_OMIT_PATHS = ".dockerignore,AGENTS.md" }
 
 # Cache control for assets
 [[headers]]
