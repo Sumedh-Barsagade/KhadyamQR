@@ -2,6 +2,8 @@
   command = "pnpm install && pnpm run build:client"
   publish = "dist"
   # Skip secrets scanning for documentation files with false positives
+  # Environment variables from Netlify UI are automatically available to the build
+  # The VITE_ prefixed variables are picked up by Vite during build time
   environment = { SECRETS_SCAN_OMIT_PATHS = ".dockerignore,AGENTS.md" }
 
 # Cache control for assets
