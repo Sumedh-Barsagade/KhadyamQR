@@ -199,7 +199,7 @@
 ### Deployment Steps
 1. Run `supabase/UPDATE_SCHEMA.sql` in Supabase SQL Editor
 2. Push code to GitHub
-3. Deploy to Netlify/Vercel
+3. Deploy to Netlify
 4. Add environment variables to deployment platform
 5. Test in production
 
