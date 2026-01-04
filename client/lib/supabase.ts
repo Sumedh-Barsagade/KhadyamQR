@@ -8,12 +8,12 @@ const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY || '';
 // Validate configuration
 if (!supabaseUrl || !supabaseAnonKey) {
   const errorMessage = 'Missing Supabase configuration. Please check your environment variables.';
-  console.error(errorMessage, { 
-    supabaseUrl: supabaseUrl ? '✅ Set' : '❌ Missing', 
+  console.error(errorMessage, {
+    supabaseUrl: supabaseUrl ? '✅ Set' : '❌ Missing',
     supabaseAnonKey: supabaseAnonKey ? '✅ Set' : '❌ Missing',
     env: {
-      VITE_SUPABASE_URL: getEnv("VITE_SUPABASE_URL") ? '✅ Set' : '❌ Missing',
-      VITE_SUPABASE_ANON_KEY: getEnv("VITE_SUPABASE_ANON_KEY") ? '✅ Set' : '❌ Missing'
+      VITE_SUPABASE_URL: import.meta.env.VITE_SUPABASE_URL ? '✅ Set' : '❌ Missing',
+      VITE_SUPABASE_ANON_KEY: import.meta.env.VITE_SUPABASE_ANON_KEY ? '✅ Set' : '❌ Missing'
     }
   });
   throw new Error(errorMessage);
