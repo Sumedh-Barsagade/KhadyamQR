@@ -1,10 +1,13 @@
 [build]
   command = "pnpm install && pnpm run build:client"
   publish = "dist"
-  # Skip secrets scanning for documentation files with false positives
-  # Environment variables from Netlify UI are automatically available to the build
-  # The VITE_ prefixed variables are picked up by Vite during build time
-  environment = { SECRETS_SCAN_OMIT_PATHS = ".dockerignore,AGENTS.md" }
+  # Environment variables for Vite build
+  # These are set in Netlify UI but explicitly declared here to ensure Vite sees them
+  environment = {
+    SECRETS_SCAN_OMIT_PATHS = ".dockerignore,AGENTS.md",
+    VITE_SUPABASE_URL = "https://dshrfgqoarhwpbhbdobt.supabase.co",
+    VITE_SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRzaHJmZ3FvYXJod3BiaGJkb2J0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTk5MjMzNjgsImV4cCI6MjA3NTQ5OTM2OH0.dPjEYMN7IclTS08VUKLaJrwZOo8lXxKtg53tTbXr8DU"
+  }
 
 # Cache control for assets
 [[headers]]
