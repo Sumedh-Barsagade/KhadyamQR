@@ -1,32 +1,9 @@
 import { createClient } from "@supabase/supabase-js";
 
-// Support multiple env var names (Vite prefix VITE_ or NEXT_PUBLIC_, or a runtime-injected __env)
-const getEnv = (name: string) => {
-  try {
-    // import.meta.env works at build time, check common keys
-    const meta: any = import.meta as any;
-    if (meta && meta.env && meta.env[name]) return String(meta.env[name]);
-  } catch {}
-  try {
-    // runtime global injected vars (optional)
-    const gw: any = (globalThis as any).__env;
-    if (gw && gw[name]) return String(gw[name]);
-  } catch {}
-  try {
-    const win: any = window as any;
-    if (win && win.__env && win.__env[name]) return String(win.__env[name]);
-  } catch {}
-  try {
-    // last resort for SSR env (unlikely for client bundle)
-    if (typeof process !== "undefined" && (process as any).env && (process as any).env[name])
-      return String((process as any).env[name]);
-  } catch {}
-  return undefined;
-};
-
-// Get Supabase configuration from environment
-const supabaseUrl = getEnv("VITE_SUPABASE_URL") || getEnv("NEXT_PUBLIC_SUPABASE_URL");
-const supabaseAnonKey = getEnv("VITE_SUPABASE_ANON_KEY") || getEnv("NEXT_PUBLIC_SUPABASE_ANON_KEY");
+// Get Supabase configuration from environment variables
+// These will be replaced by Vite at build time with actual values from netlify.toml
+const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || '';
+const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY || '';
 
 // Validate configuration
 if (!supabaseUrl || !supabaseAnonKey) {
