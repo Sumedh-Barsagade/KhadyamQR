@@ -31,6 +31,7 @@ export function createServer() {
   } else {
     // In production, only allow specific origins
     const allowedOrigins = [
+      'https://khadyam-qr-menu-system.netlify.app',
       'https://khadyamqr-menusystem.netlify.app',
       // Add Vercel domain after deployment: 'https://your-app-name.vercel.app',
       // Add other production domains here

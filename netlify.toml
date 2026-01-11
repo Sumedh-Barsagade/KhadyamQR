@@ -1,8 +1,9 @@
 [build]
   # Create .env file from netlify env vars before building
   # This ensures Vite can access VITE_ prefixed variables
-  command = "pnpm install && pnpm run build:client"
+  command = "pnpm install && pnpm run build:client && pnpm run build:server"
   publish = "dist"
+  functions = "netlify/functions"
 
 [build.environment]
   SECRETS_SCAN_OMIT_PATHS = ".dockerignore,AGENTS.md"
