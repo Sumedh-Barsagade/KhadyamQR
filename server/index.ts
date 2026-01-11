@@ -69,6 +69,8 @@ export function createServer() {
       nodeEnv: process.env.NODE_ENV || 'development',
       viteUrl: process.env.VITE_SUPABASE_URL ? '✅ Set' : '❌ Missing',
       viteKey: process.env.VITE_SUPABASE_ANON_KEY ? '✅ Set' : '❌ Missing',
+      actualSupabaseUrl: process.env.SUPABASE_URL,
+      actualViteUrl: process.env.VITE_SUPABASE_URL,
     };
     res.json({ 
       status: 'ok',
