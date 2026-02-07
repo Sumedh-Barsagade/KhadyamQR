@@ -24,7 +24,7 @@ const cardVariants = {
     rotateX: 0,
     transition: {
       duration: 0.6,
-      ease: "easeOut" as const,
+      type: "tween" as const,
     },
   },
 };
@@ -36,7 +36,7 @@ const iconVariants = {
     rotate: 12,
     transition: {
       duration: 0.3,
-      type: "spring",
+      type: "spring" as const,
       stiffness: 400,
       damping: 8,
     },
@@ -48,7 +48,7 @@ const headerVariants = {
   visible: {
     opacity: 1,
     y: 0,
-    transition: { duration: 0.7, ease: "easeOut" as const },
+    transition: { duration: 0.7, type: "tween" as const },
   },
 };
 
