@@ -1,6 +1,10 @@
 // MUST load dotenv before any other imports that need env vars
 import 'dotenv/config';
+import path from 'path';
 import { createClient } from "@supabase/supabase-js";
+
+// Ensure .env is loaded from project root
+require('dotenv').config({ path: path.resolve(process.cwd(), '.env') });
 
 // Get environment variables with fallbacks
 const url = process.env.NEXT_PUBLIC_SUPABASE_URL ||
