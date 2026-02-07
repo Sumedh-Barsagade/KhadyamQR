@@ -1,5 +1,9 @@
 // Load environment variables FIRST before any other imports
-import "dotenv/config";
+import 'dotenv/config';
+
+// Debug: Check if dotenv loaded correctly
+console.log('SERVER: process.cwd() =', process.cwd());
+console.log('SERVER: process.env.SUPABASE_URL =', process.env.SUPABASE_URL ? 'SET' : 'NOT SET');
 
 import express from "express";
 import cors from "cors";
