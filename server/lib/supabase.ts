@@ -48,5 +48,10 @@ if (url && serviceKey) {
 // Helper function to get the base URL
 export const getSupabaseUrl = () => url;
 
+// Helper function to check if Supabase is configured
+export const isSupabaseConfigured = (): boolean => {
+  return supabaseAdmin !== null;
+};
+
 // Export the client (may be null if not configured)
 export { supabaseAdmin };
