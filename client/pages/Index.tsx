@@ -25,7 +25,7 @@ const itemVariants = {
     rotateX: 0,
     transition: {
       duration: 0.6,
-      ease: "easeOut",
+      type: "tween" as const,
     },
   },
 };
@@ -36,7 +36,7 @@ const floatingVariants = {
     transition: {
       duration: 3,
       repeat: Infinity,
-      ease: "easeInOut",
+      type: "tween" as const,
     },
   },
 };
@@ -222,7 +222,7 @@ export default function Index() {
                   transition: {
                     duration: 4,
                     repeat: Infinity,
-                    ease: "easeInOut",
+                    type: "tween" as const,
                   },
                 }}
               />
@@ -310,377 +310,149 @@ export default function Index() {
           </motion.div>
         </section>
 
-        <motion.section
-          id="how-it-works"
-          className="grid lg:grid-cols-3 gap-6"
-          variants={containerVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-100px" }}
-        >
-          <motion.h2
-            className="text-2xl font-bold col-span-full text-center"
-            initial={{ opacity: 0, y: -20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-          >
-            How It Works
-          </motion.h2>
-          {[
-            {
-              icon: "🏪",
-              title: "Create Restaurants",
-              desc: "Add multiple restaurants, upload a logo, and auto-generate a clean slug.",
-            },
-            {
-              icon: "🍽️",
-              title: "Add Menu Items",
-              desc: "Attach photos, descriptions, prices, and categories. Edits update instantly on public pages.",
-            },
-            {
-              icon: "📱",
-              title: "Generate QR",
-              desc: "One QR per restaurant that always points to /menu/[slug]. Stable URL, no reprints.",
-            },
-          ].map((f, idx) => (
-            <motion.div
-              key={f.title}
-              className="rounded-xl border bg-card p-6 text-center"
-              variants={itemVariants}
-              whileHover={{
-                scale: 1.08,
-                rotateY: 10,
-                boxShadow: "0 15px 35px rgba(16, 185, 129, 0.2)",
-              }}
-              style={{ perspective: "1000px" }}
-            >
-              <motion.div
-                className="text-4xl mb-3"
-                animate={{ y: [0, -10, 0] }}
-                transition={{
-                  duration: 2.5,
-                  repeat: Infinity,
-                  delay: idx * 0.3,
-                }}
-              >
-                {f.icon}
-              </motion.div>
-              <h3 className="font-semibold text-lg mb-2">{f.title}</h3>
-              <p className="text-sm text-muted-foreground">{f.desc}</p>
-            </motion.div>
-          ))}
-        </motion.section>
-
-        <motion.section
-          id="features"
-          className="grid gap-6"
-          variants={containerVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-100px" }}
-        >
-          <motion.h2
-            className="text-2xl font-bold text-center"
+        <section className="grid gap-8">
+          <motion.div
+            className="text-center space-y-4"
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
+            transition={{ duration: 0.8 }}
           >
-            Key Features
-          </motion.h2>
-          <motion.div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            <h2 className="text-3xl font-bold">How It Works</h2>
+            <p className="text-muted-foreground max-w-2xl mx-auto">
+              Simple steps to digitize your restaurant menu
+            </p>
+          </motion.div>
+
+          <div className="grid md:grid-cols-3 gap-6">
             {[
               {
-                icon: "📁",
-                title: "Menu Categories",
-                desc: "Organize items into Starters, Main Course, Desserts, etc.",
+                step: "1",
+                title: "Create Restaurant",
+                desc: "Set up your restaurant with logo",
               },
               {
-                icon: "📸",
+                step: "2",
+                title: "Add Menu Items",
+                desc: "Upload photos and prices",
+              },
+              {
+                step: "3",
+                title: "Generate QR",
+                desc: "Share your persistent QR code",
+              },
+            ].map((item, i) => (
+              <motion.div
+                key={i}
+                className="rounded-xl border bg-card p-6 text-card-foreground"
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6, delay: i * 0.2 }}
+              >
+                <div className="rounded-full w-12 h-12 bg-primary text-primary-foreground flex items-center justify-center font-bold mb-4">
+                  {item.step}
+                </div>
+                <h3 className="font-bold mb-2">{item.title}</h3>
+                <p className="text-sm text-muted-foreground">{item.desc}</p>
+              </motion.div>
+            ))}
+          </div>
+        </section>
+
+        <section className="grid gap-8">
+          <motion.div
+            className="text-center space-y-4"
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
+          >
+            <h2 className="text-3xl font-bold">Features</h2>
+            <p className="text-muted-foreground max-w-2xl mx-auto">
+              Everything you need to manage your restaurant menu
+            </p>
+          </motion.div>
+
+          <div className="grid md:grid-cols-2 gap-6">
+            {[
+              {
+                icon: "📱",
+                title: "QR Code Management",
+                desc: "Generate and manage persistent QR codes",
+              },
+              {
+                icon: "🖼️",
                 title: "Photo Upload",
-                desc: "Add beautiful photos to your menu items",
+                desc: "High-quality menu item photos",
               },
               {
-                icon: "⚡",
-                title: "Real-time Updates",
-                desc: "Changes reflect instantly on public menu",
+                icon: "💰",
+                title: "Price Management",
+                desc: "Easy price updates",
               },
               {
                 icon: "🔄",
-                title: "Easy Management",
-                desc: "Simple dashboard for restaurant owners",
+                title: "Real-time Updates",
+                desc: "Changes reflect instantly",
               },
               {
-                icon: "🎨",
-                title: "Professional Design",
-                desc: "Modern, mobile-friendly menu pages",
+                icon: "📊",
+                title: "Analytics",
+                desc: "Track QR code scans",
               },
               {
-                icon: "🔒",
-                title: "Secure",
-                desc: "Built on Supabase with RLS policies",
+                icon: "🔐",
+                title: "Secure Access",
+                desc: "Restaurant owner login",
               },
-              {
-                icon: "⏸️",
-                title: "Enable/Disable",
-                desc: "Control restaurant and item availability",
-              },
-              {
-                icon: "💾",
-                title: "Persistent QR",
-                desc: "QR codes never change, even after updates",
-              },
-            ].map((f, idx) => (
-              <motion.div
-                key={f.title}
-                className="rounded-lg border bg-card p-4"
-                variants={itemVariants}
-                whileHover={{
-                  scale: 1.12,
-                  rotateX: -5,
-                  boxShadow: "0 10px 25px rgba(16, 185, 129, 0.15)",
-                }}
-                style={{ perspective: "800px" }}
-              >
-                <motion.div
-                  className="text-2xl mb-2"
-                  animate={{ scale: [1, 1.2, 1] }}
-                  transition={{
-                    duration: 2,
-                    repeat: Infinity,
-                    delay: idx * 0.15,
-                  }}
-                >
-                  {f.icon}
-                </motion.div>
-                <h3 className="font-semibold text-sm mb-1">{f.title}</h3>
-                <p className="text-xs text-muted-foreground">{f.desc}</p>
-              </motion.div>
-            ))}
-          </motion.div>
-        </motion.section>
-
-        <motion.section
-          id="faq"
-          className="grid gap-6 max-w-3xl mx-auto w-full"
-          variants={containerVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-100px" }}
-        >
-          <motion.h2
-            className="text-2xl font-bold text-center"
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-          >
-            Frequently Asked Questions
-          </motion.h2>
-          <motion.div className="grid gap-4">
-            {[
-              {
-                q: "How does it work?",
-                a: "Create a restaurant, add menu items with photos and prices, generate a QR code, and share it with customers. They scan the QR to view your live menu.",
-              },
-              {
-                q: "Can I update my menu after generating the QR?",
-                a: "Yes! The QR code points to a permanent URL. Update your menu anytime and changes appear instantly - no need to reprint QR codes.",
-              },
-              {
-                q: "How do I organize my menu?",
-                a: "Menu items support categories like Starters, Main Course, Desserts, Beverages, etc. Your public menu automatically groups items by category.",
-              },
-              {
-                q: "Who can access what?",
-                a: "Admins manage all restaurants and generate QR codes. Restaurant owners can only manage their own menu items. Public menus are accessible to everyone.",
-              },
-              {
-                q: "What if I need help?",
-                a: "Contact your admin for restaurant setup and credentials. Check the documentation files for detailed guides.",
-              },
-            ].map((faq, i) => (
+            ].map((feature, i) => (
               <motion.div
                 key={i}
-                className="rounded-lg border bg-card p-5"
-                variants={itemVariants}
-                whileHover={{
-                  scale: 1.05,
-                  x: 10,
-                  boxShadow: "0 10px 25px rgba(16, 185, 129, 0.1)",
-                }}
+                className="rounded-xl border bg-card p-6"
+                initial={{ opacity: 0 }}
+                whileInView={{ opacity: 1 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6, delay: (i % 3) * 0.1 }}
+                whileHover={{ scale: 1.02 }}
               >
-                <h3 className="font-semibold mb-2">{faq.q}</h3>
-                <p className="text-sm text-muted-foreground">{faq.a}</p>
+                <div className="text-3xl mb-3">{feature.icon}</div>
+                <h3 className="font-bold mb-2">{feature.title}</h3>
+                <p className="text-sm text-muted-foreground">{feature.desc}</p>
               </motion.div>
             ))}
-          </motion.div>
-        </motion.section>
+          </div>
+        </section>
 
-        <motion.section
-          id="cta"
-          className="text-center py-12 rounded-2xl bg-gradient-to-r from-emerald-500 to-emerald-600 text-white"
-          initial={{ opacity: 0, scale: 0.95 }}
-          whileInView={{ opacity: 1, scale: 1 }}
-          viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 0.6 }}
-          whileHover={{
-            boxShadow: "0 25px 50px rgba(16, 185, 129, 0.4)",
-          }}
-        >
-          <motion.h2
-            className="text-3xl font-bold mb-4"
-            initial={{ opacity: 0, y: -20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.2 }}
-          >
-            Ready to Get Started?
-          </motion.h2>
-          <motion.p
-            className="text-emerald-50 mb-6 max-w-2xl mx-auto"
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.3 }}
-          >
-            Join restaurants using KhadyamQR to provide modern, digital menus to
-            their customers.
-          </motion.p>
-          <motion.div
-            className="flex flex-wrap gap-3 justify-center"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.4 }}
-          >
+        <section className="text-center space-y-6">
+          <div className="space-y-2">
+            <h2 className="text-3xl font-bold">Ready to Modernize Your Menu?</h2>
+            <p className="text-muted-foreground text-lg">
+              Contact us to get started with KhadyamQR
+            </p>
+          </div>
+          <div className="flex flex-wrap justify-center gap-4">
             <motion.a
-              href="/restaurant-login"
-              className="inline-flex h-12 items-center rounded-md bg-white text-emerald-600 px-8 font-semibold hover:bg-emerald-50"
-              whileHover={{ scale: 1.08, y: -3 }}
+              href="/contact"
+              className="inline-flex h-11 items-center rounded-md bg-primary px-8 text-primary-foreground hover:bg-primary/90"
+              whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.98 }}
             >
-              Restaurant Login
+              Get Started
             </motion.a>
             <motion.a
-              href="/admin"
-              className="inline-flex h-12 items-center rounded-md border-2 border-white text-white px-8 font-semibold hover:bg-white/10"
-              whileHover={{ scale: 1.08, y: -3 }}
+              href="https://wa.me/918830778401"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex h-11 items-center rounded-md border px-8 hover:bg-accent"
+              whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.98 }}
             >
-              Admin Dashboard
+              WhatsApp Us
             </motion.a>
-          </motion.div>
-        </motion.section>
+          </div>
+        </section>
       </main>
-
-      <motion.footer
-        className="border-t bg-muted/30"
-        initial={{ opacity: 0 }}
-        whileInView={{ opacity: 1 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.6 }}
-      >
-        <div className="container py-10">
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-8">
-            <div>
-              <motion.div
-                className="flex items-center gap-2 font-bold mb-3"
-                initial={{ opacity: 0, x: -10 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-              >
-                <img
-                  src="/khadyamqr-logo.svg"
-                  alt="KhadyamQR"
-                  className="h-6 w-6 rounded"
-                />
-                <span>KhadyamQR</span>
-              </motion.div>
-              <p className="text-sm text-muted-foreground">
-                Modern QR-based menu management for restaurants.
-              </p>
-            </div>
-            <div>
-              <h4 className="font-semibold mb-3 text-sm">Product</h4>
-              <div className="grid gap-2 text-sm text-muted-foreground">
-                <motion.a
-                  href="#how-it-works"
-                  className="hover:text-foreground"
-                  whileHover={{ x: 5 }}
-                >
-                  How It Works
-                </motion.a>
-                <motion.a
-                  href="#features"
-                  className="hover:text-foreground"
-                  whileHover={{ x: 5 }}
-                >
-                  Features
-                </motion.a>
-                <motion.a
-                  href="#faq"
-                  className="hover:text-foreground"
-                  whileHover={{ x: 5 }}
-                >
-                  FAQ
-                </motion.a>
-              </div>
-            </div>
-            <div>
-              <h4 className="font-semibold mb-3 text-sm">Access</h4>
-              <div className="grid gap-2 text-sm text-muted-foreground">
-                <motion.a
-                  href="/restaurant-login"
-                  className="hover:text-foreground"
-                  whileHover={{ x: 5 }}
-                >
-                  Restaurant Login
-                </motion.a>
-                <motion.a
-                  href="/admin"
-                  className="hover:text-foreground"
-                  whileHover={{ x: 5 }}
-                >
-                  Admin Dashboard
-                </motion.a>
-              </div>
-            </div>
-            <div>
-              <h4 className="font-semibold mb-3 text-sm">Legal</h4>
-              <div className="grid gap-2 text-sm text-muted-foreground">
-                <motion.a
-                  href="/privacy-policy"
-                  className="hover:text-foreground"
-                  whileHover={{ x: 5 }}
-                >
-                  Privacy Policy
-                </motion.a>
-                <motion.a
-                  href="/terms-of-service"
-                  className="hover:text-foreground"
-                  whileHover={{ x: 5 }}
-                >
-                  Terms of Service
-                </motion.a>
-                <motion.a
-                  href="/contact"
-                  className="hover:text-foreground"
-                  whileHover={{ x: 5 }}
-                >
-                  Contact Us
-                </motion.a>
-              </div>
-            </div>
-          </div>
-          <div className="border-t pt-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-muted-foreground">
-            <div>
-              © {new Date().getFullYear()} KhadyamQR. All rights reserved.
-            </div>
-          </div>
-        </div>
-      </motion.footer>
     </div>
   );
 }
