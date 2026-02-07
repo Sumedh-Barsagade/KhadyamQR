@@ -1,11 +1,24 @@
 // MUST import load-env FIRST before any other imports
-import './load-env';
+import "./load-env";
 
 import express from "express";
 import cors from "cors";
 import { handleDemo } from "./routes/demo";
-import { listRestaurants, createRestaurant, uploadQrAndSave, deleteRestaurant, toggleRestaurantStatus, createRestaurantLogin, resetRestaurantPassword } from "./routes/admin";
-import { listMenuItems, createMenuItem, deleteMenuItem, setMenuItemAvailability } from "./routes/menu";
+import {
+  listRestaurants,
+  createRestaurant,
+  uploadQrAndSave,
+  deleteRestaurant,
+  toggleRestaurantStatus,
+  createRestaurantLogin,
+  resetRestaurantPassword,
+} from "./routes/admin";
+import {
+  listMenuItems,
+  createMenuItem,
+  deleteMenuItem,
+  setMenuItemAvailability,
+} from "./routes/menu";
 import contactRouter from "./routes/contact";
 
 export function createServer() {
@@ -16,43 +29,51 @@ export function createServer() {
   app.use(express.urlencoded({ extended: true, limit: "10mb" }));
 
   // CORS configuration
-  const isDevelopment = process.env.NODE_ENV !== 'production';
+  const isDevelopment = process.env.NODE_ENV !== "production";
 
   if (isDevelopment) {
     // In development, allow all origins for easier testing
-    app.use(cors({
-      origin: true, // Allow all origins in development
-      methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-      allowedHeaders: ['Content-Type', 'Authorization'],
-      credentials: true
-    }));
+    app.use(
+      cors({
+        origin: true, // Allow all origins in development
+        methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+        allowedHeaders: ["Content-Type", "Authorization"],
+        credentials: true,
+      }),
+    );
   } else {
     // In production, only allow specific origins
     const allowedOrigins = [
-      'https://your-production-domain.com',
+      "https://your-production-domain.com",
       // Add other production domains here
     ];
 
-    app.use(cors({
-      origin: function(origin, callback) {
-        if (!origin || allowedOrigins.includes(origin)) {
-          return callback(null, true);
-        }
-        const msg = 'The CORS policy for this site does not allow access from the specified Origin.';
-        return callback(new Error(msg), false);
-      },
-      methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-      allowedHeaders: ['Content-Type', 'Authorization'],
-      credentials: true
-    }));
+    app.use(
+      cors({
+        origin: function (origin, callback) {
+          if (!origin || allowedOrigins.includes(origin)) {
+            return callback(null, true);
+          }
+          const msg =
+            "The CORS policy for this site does not allow access from the specified Origin.";
+          return callback(new Error(msg), false);
+        },
+        methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+        allowedHeaders: ["Content-Type", "Authorization"],
+        credentials: true,
+      }),
+    );
   }
 
   // Security headers
   app.use((_req, res, next) => {
-    res.setHeader('X-Content-Type-Options', 'nosniff');
-    res.setHeader('X-Frame-Options', 'DENY');
-    res.setHeader('X-XSS-Protection', '1; mode=block');
-    res.setHeader('Strict-Transport-Security', 'max-age=31536000; includeSubDomains');
+    res.setHeader("X-Content-Type-Options", "nosniff");
+    res.setHeader("X-Frame-Options", "DENY");
+    res.setHeader("X-XSS-Protection", "1; mode=block");
+    res.setHeader(
+      "Strict-Transport-Security",
+      "max-age=31536000; includeSubDomains",
+    );
     next();
   });
 
@@ -65,7 +86,8 @@ export function createServer() {
   app.get("/api/demo", handleDemo);
 
   // Check if Supabase is configured before initializing admin routes
-  const hasSupabaseConfig = process.env.SUPABASE_URL && process.env.SUPABASE_SERVICE_ROLE_KEY;
+  const hasSupabaseConfig =
+    process.env.SUPABASE_URL && process.env.SUPABASE_SERVICE_ROLE_KEY;
 
   if (hasSupabaseConfig) {
     // Admin helpers (no login; guarded by server service role)
@@ -75,7 +97,7 @@ export function createServer() {
     app.post("/api/restaurants/create-login", createRestaurantLogin);
     app.delete("/api/restaurants/:id", deleteRestaurant);
     app.patch("/api/restaurants/:id/status", toggleRestaurantStatus);
-    
+
     // Reset restaurant password (admin only)
     app.post("/api/admin/reset-restaurant-password", resetRestaurantPassword);
 
@@ -92,20 +114,28 @@ export function createServer() {
     app.use("/api/", (_req, res) => {
       res.status(503).json({
         error: "Service Unavailable",
-        message: "Backend services are not configured. Please set SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY environment variables."
+        message:
+          "Backend services are not configured. Please set SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY environment variables.",
       });
     });
   }
 
   // Error handling
-  app.use((err: Error, _req: express.Request, res: express.Response, _next: express.NextFunction) => {
-    console.error(err.stack);
-    res.status(500).json({ error: 'Something went wrong!' });
-  });
+  app.use(
+    (
+      err: Error,
+      _req: express.Request,
+      res: express.Response,
+      _next: express.NextFunction,
+    ) => {
+      console.error(err.stack);
+      res.status(500).json({ error: "Something went wrong!" });
+    },
+  );
 
   // Handle 404
   app.use((_req, res) => {
-    res.status(404).json({ error: 'Not Found' });
+    res.status(404).json({ error: "Not Found" });
   });
 
   return app;
@@ -118,8 +148,10 @@ const port = process.env.PORT || 3001;
 app.listen(port, () => {
   console.log(`Server running on port ${port}`);
   if (process.env.SUPABASE_URL) {
-    console.log('Supabase configured ✓');
+    console.log("Supabase configured ✓");
   } else {
-    console.log('Warning: Supabase not configured. API routes will return 503.');
+    console.log(
+      "Warning: Supabase not configured. API routes will return 503.",
+    );
   }
 });

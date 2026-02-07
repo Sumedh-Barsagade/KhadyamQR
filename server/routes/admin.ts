@@ -6,7 +6,8 @@ const ensureSupabaseConfigured = (res: any) => {
   if (!isSupabaseConfigured()) {
     res.status(503).json({
       error: "Service Unavailable",
-      message: "Database service is not configured. Please set SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY."
+      message:
+        "Database service is not configured. Please set SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY.",
     });
     return false;
   }

@@ -1,12 +1,12 @@
 import { createClient } from "@supabase/supabase-js";
 
 // Get environment variables with fallbacks
-const url = process.env.NEXT_PUBLIC_SUPABASE_URL ||
-            process.env.VITE_SUPABASE_URL ||
-            process.env.SUPABASE_URL;
+const url =
+  process.env.NEXT_PUBLIC_SUPABASE_URL ||
+  process.env.VITE_SUPABASE_URL ||
+  process.env.SUPABASE_URL;
 
 const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
-
 
 // Create a null client if credentials are missing (will be handled in routes)
 let supabaseAdmin: any = null;
@@ -20,30 +20,45 @@ if (url && serviceKey) {
         autoRefreshToken: false,
       },
     });
-    
+
     // Test the connection (non-blocking)
     (async () => {
       try {
-        const { error } = await supabaseAdmin.from('restaurants').select('*').limit(1);
+        const { error } = await supabaseAdmin
+          .from("restaurants")
+          .select("*")
+          .limit(1);
         if (error) {
-          console.warn('Supabase connection test warning:', error.message);
-          if (error.code === '42501') {
-            console.warn('Permission denied. Please check if your service role key has the correct permissions.');
-          } else if (error.code === '42P01') {
-            console.warn('Table not found. Please ensure the "restaurants" table exists in your Supabase database.');
+          console.warn("Supabase connection test warning:", error.message);
+          if (error.code === "42501") {
+            console.warn(
+              "Permission denied. Please check if your service role key has the correct permissions.",
+            );
+          } else if (error.code === "42P01") {
+            console.warn(
+              'Table not found. Please ensure the "restaurants" table exists in your Supabase database.',
+            );
           }
         } else {
-          console.log('Supabase connection successful ✓');
+          console.log("Supabase connection successful ✓");
         }
       } catch (err) {
-        console.warn('Error testing Supabase connection:', err instanceof Error ? err.message : String(err));
+        console.warn(
+          "Error testing Supabase connection:",
+          err instanceof Error ? err.message : String(err),
+        );
       }
     })();
   } catch (error) {
-    console.error('Failed to initialize Supabase client:', error instanceof Error ? error.message : String(error));
+    console.error(
+      "Failed to initialize Supabase client:",
+      error instanceof Error ? error.message : String(error),
+    );
   }
 } else {
-  console.warn('Supabase credentials not configured. Set SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY.');
+  console.warn(
+    "Supabase credentials not configured. Set SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY.",
+  );
 }
 
 // Helper function to get the base URL

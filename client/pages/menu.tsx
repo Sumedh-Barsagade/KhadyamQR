@@ -1,6 +1,6 @@
 // React import not needed with jsx runtime
-import ScrollList from '@/components/ui/scroll-list';
-import { motion } from 'framer-motion';
+import ScrollList from "@/components/ui/scroll-list";
+import { motion } from "framer-motion";
 
 // Define the type for menu items
 interface MenuItem {
@@ -15,51 +15,53 @@ interface MenuItem {
 // Sample menu data - replace with your actual menu data
 const menuItems: MenuItem[] = [
   {
-    id: '1',
-    name: 'Margherita Pizza',
-    description: 'Classic pizza with tomato sauce, mozzarella, and basil',
+    id: "1",
+    name: "Margherita Pizza",
+    description: "Classic pizza with tomato sauce, mozzarella, and basil",
     price: 12.99,
-    image: '/images/margherita.jpg',
-    category: 'Pizza'
+    image: "/images/margherita.jpg",
+    category: "Pizza",
   },
   {
-    id: '2',
-    name: 'Pasta Carbonara',
-    description: 'Spaghetti with creamy egg sauce, pancetta, and parmesan',
+    id: "2",
+    name: "Pasta Carbonara",
+    description: "Spaghetti with creamy egg sauce, pancetta, and parmesan",
     price: 14.99,
-    image: '/images/carbonara.jpg',
-    category: 'Pasta'
+    image: "/images/carbonara.jpg",
+    category: "Pasta",
   },
   {
-    id: '3',
-    name: 'Caesar Salad',
-    description: 'Romaine lettuce, croutons, parmesan, with Caesar dressing',
+    id: "3",
+    name: "Caesar Salad",
+    description: "Romaine lettuce, croutons, parmesan, with Caesar dressing",
     price: 9.99,
-    image: '/images/caesar.jpg',
-    category: 'Salad'
+    image: "/images/caesar.jpg",
+    category: "Salad",
   },
   {
-    id: '4',
-    name: 'Tiramisu',
-    description: 'Classic Italian dessert with coffee-soaked ladyfingers and mascarpone',
+    id: "4",
+    name: "Tiramisu",
+    description:
+      "Classic Italian dessert with coffee-soaked ladyfingers and mascarpone",
     price: 7.99,
-    image: '/images/tiramisu.jpg',
-    category: 'Dessert'
+    image: "/images/tiramisu.jpg",
+    category: "Dessert",
   },
   {
-    id: '5',
-    name: 'Grilled Salmon',
-    description: 'Fresh salmon fillet with lemon butter sauce and seasonal vegetables',
+    id: "5",
+    name: "Grilled Salmon",
+    description:
+      "Fresh salmon fillet with lemon butter sauce and seasonal vegetables",
     price: 18.99,
-    image: '/images/salmon.jpg',
-    category: 'Main Course'
+    image: "/images/salmon.jpg",
+    category: "Main Course",
   },
 ];
 
 const MenuPage = () => {
   // Render function for each menu item
   const renderMenuItem = (item: MenuItem) => (
-    <motion.div 
+    <motion.div
       className="bg-white rounded-xl shadow-lg overflow-hidden"
       whileHover={{ scale: 1.02 }}
       whileTap={{ scale: 0.98 }}
@@ -99,15 +101,17 @@ const MenuPage = () => {
       <div className="max-w-4xl mx-auto">
         <div className="text-center mb-12">
           <h1 className="text-4xl font-bold text-gray-900 mb-2">Our Menu</h1>
-          <p className="text-lg text-gray-600">Swipe to browse our delicious offerings</p>
+          <p className="text-lg text-gray-600">
+            Swipe to browse our delicious offerings
+          </p>
         </div>
-        
+
         <ScrollList
           data={menuItems}
           renderItem={renderMenuItem}
           itemHeight={400} // Adjust based on your card height
         />
-        
+
         <div className="mt-8 text-center">
           <button className="bg-primary-600 hover:bg-primary-700 text-white font-bold py-3 px-8 rounded-full text-lg">
             View Cart

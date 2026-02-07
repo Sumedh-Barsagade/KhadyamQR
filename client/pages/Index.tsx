@@ -426,7 +426,9 @@ export default function Index() {
 
         <section className="text-center space-y-6">
           <div className="space-y-2">
-            <h2 className="text-3xl font-bold">Ready to Modernize Your Menu?</h2>
+            <h2 className="text-3xl font-bold">
+              Ready to Modernize Your Menu?
+            </h2>
             <p className="text-muted-foreground text-lg">
               Contact us to get started with KhadyamQR
             </p>

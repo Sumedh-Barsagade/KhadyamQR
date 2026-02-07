@@ -44,17 +44,20 @@ const App = () => (
             <Route path="/terms-of-service" element={<TermsOfService />} />
             <Route path="/menu/:slug" element={<PublicMenu />} />
           </Route>
-          
+
           {/* Auth routes with minimal layout */}
           <Route path="/login" element={<Login />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/reset-password" element={<ResetPassword />} />
-          
+
           {/* Admin routes */}
           <Route path="/admin" element={<Admin />} />
           <Route path="/restaurant-login" element={<RestaurantLogin />} />
-          <Route path="/restaurant-dashboard" element={<RestaurantDashboard />} />
-          
+          <Route
+            path="/restaurant-dashboard"
+            element={<RestaurantDashboard />}
+          />
+
           {/* 404 - Not Found */}
           <Route path="*" element={<NotFound />} />
         </Routes>
