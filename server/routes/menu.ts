@@ -1,7 +1,21 @@
 import type { RequestHandler } from "express";
-import { supabaseAdmin } from "../lib/supabase";
+import { supabaseAdmin, isSupabaseConfigured } from "../lib/supabase";
+
+// Helper function to check Supabase configuration
+const ensureSupabaseConfigured = (res: any) => {
+  if (!isSupabaseConfigured()) {
+    res.status(503).json({
+      error: "Service Unavailable",
+      message: "Database service is not configured. Please set SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY."
+    });
+    return false;
+  }
+  return true;
+};
 
 export const listMenuItems: RequestHandler = async (req, res) => {
+  if (!ensureSupabaseConfigured(res)) return;
+
   const restaurantId = req.params.restaurantId;
   if (!restaurantId) return res.status(400).json({ error: "restaurantId required" });
   const { data, error } = await supabaseAdmin
