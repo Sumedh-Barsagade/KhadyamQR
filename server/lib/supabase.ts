@@ -7,12 +7,6 @@ const url = process.env.NEXT_PUBLIC_SUPABASE_URL ||
 
 const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
-// Debug logging for environment setup
-if (process.env.NODE_ENV === 'development') {
-  console.log('DEBUG: Checking Supabase configuration...');
-  console.log('  SUPABASE_URL:', url ? '✓ Set' : '✗ Not set');
-  console.log('  SUPABASE_SERVICE_ROLE_KEY:', serviceKey ? '✓ Set' : '✗ Not set');
-}
 
 // Create a null client if credentials are missing (will be handled in routes)
 let supabaseAdmin: any = null;
