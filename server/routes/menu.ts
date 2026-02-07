@@ -29,6 +29,8 @@ export const listMenuItems: RequestHandler = async (req, res) => {
 };
 
 export const createMenuItem: RequestHandler = async (req, res) => {
+  if (!ensureSupabaseConfigured(res)) return;
+
   const restaurantId = req.params.restaurantId;
   const { name, price, description, category = 'Main Course', available = true, image_base64 } = req.body as {
     name: string; price: number; description?: string; category?: string; available?: boolean; image_base64?: string;
@@ -60,6 +62,8 @@ export const createMenuItem: RequestHandler = async (req, res) => {
 };
 
 export const deleteMenuItem: RequestHandler = async (req, res) => {
+  if (!ensureSupabaseConfigured(res)) return;
+
   const itemId = req.params.itemId;
   if (!itemId) return res.status(400).json({ error: "itemId required" });
   // Optionally delete image from storage if present
@@ -84,6 +88,8 @@ export const deleteMenuItem: RequestHandler = async (req, res) => {
 };
 
 export const setMenuItemAvailability: RequestHandler = async (req, res) => {
+  if (!ensureSupabaseConfigured(res)) return;
+
   const itemId = req.params.itemId;
   const { available } = req.body as { available: boolean };
   if (!itemId || typeof available !== 'boolean') return res.status(400).json({ error: "itemId and available required" });
