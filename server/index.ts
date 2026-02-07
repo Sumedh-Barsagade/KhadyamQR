@@ -1,15 +1,5 @@
-// Load environment variables FIRST before any other imports
-import dotenv from 'dotenv';
-import path from 'path';
-
-// Explicitly load .env file
-const envPath = path.resolve(process.cwd(), '.env');
-console.log('DEBUG: Loading .env from:', envPath);
-const result = dotenv.config({ path: envPath });
-console.log('DEBUG: dotenv.config result:', result.error ? `ERROR: ${result.error.message}` : 'SUCCESS');
-if (result.parsed) {
-  console.log('DEBUG: Loaded env keys:', Object.keys(result.parsed).join(', '));
-}
+// MUST import load-env FIRST before any other imports
+import './load-env';
 
 import express from "express";
 import cors from "cors";
