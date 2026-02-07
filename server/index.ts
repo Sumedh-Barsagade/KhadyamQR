@@ -89,7 +89,7 @@ export function createServer() {
     app.use("/api/contact", contactRouter);
   } else {
     // Provide helpful message when Supabase is not configured
-    app.get("/api/*", (_req, res) => {
+    app.use("/api/", (_req, res) => {
       res.status(503).json({
         error: "Service Unavailable",
         message: "Backend services are not configured. Please set SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY environment variables."
