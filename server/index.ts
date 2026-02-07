@@ -1,4 +1,6 @@
+// Load environment variables FIRST before any other imports
 import "dotenv/config";
+
 import express from "express";
 import cors from "cors";
 import { handleDemo } from "./routes/demo";
@@ -62,25 +64,38 @@ export function createServer() {
 
   app.get("/api/demo", handleDemo);
 
-  // Admin helpers (no login; guarded by server service role)
-  app.get("/api/restaurants", listRestaurants);
-  app.post("/api/restaurants", createRestaurant);
-  app.post("/api/restaurants/qr", uploadQrAndSave);
-  app.post("/api/restaurants/create-login", createRestaurantLogin);
-  app.delete("/api/restaurants/:id", deleteRestaurant);
-  app.patch("/api/restaurants/:id/status", toggleRestaurantStatus);
-  
-  // Reset restaurant password (admin only)
-  app.post("/api/admin/reset-restaurant-password", resetRestaurantPassword);
+  // Check if Supabase is configured before initializing admin routes
+  const hasSupabaseConfig = process.env.SUPABASE_URL && process.env.SUPABASE_SERVICE_ROLE_KEY;
 
-  // Menu items
-  app.get("/api/restaurants/:restaurantId/menu-items", listMenuItems);
-  app.post("/api/restaurants/:restaurantId/menu-items", createMenuItem);
-  app.delete("/api/menu-items/:itemId", deleteMenuItem);
-  app.patch("/api/menu-items/:itemId/availability", setMenuItemAvailability);
+  if (hasSupabaseConfig) {
+    // Admin helpers (no login; guarded by server service role)
+    app.get("/api/restaurants", listRestaurants);
+    app.post("/api/restaurants", createRestaurant);
+    app.post("/api/restaurants/qr", uploadQrAndSave);
+    app.post("/api/restaurants/create-login", createRestaurantLogin);
+    app.delete("/api/restaurants/:id", deleteRestaurant);
+    app.patch("/api/restaurants/:id/status", toggleRestaurantStatus);
+    
+    // Reset restaurant password (admin only)
+    app.post("/api/admin/reset-restaurant-password", resetRestaurantPassword);
 
-  // Contact form route
-  app.use("/api/contact", contactRouter);
+    // Menu items
+    app.get("/api/restaurants/:restaurantId/menu-items", listMenuItems);
+    app.post("/api/restaurants/:restaurantId/menu-items", createMenuItem);
+    app.delete("/api/menu-items/:itemId", deleteMenuItem);
+    app.patch("/api/menu-items/:itemId/availability", setMenuItemAvailability);
+
+    // Contact form route
+    app.use("/api/contact", contactRouter);
+  } else {
+    // Provide helpful message when Supabase is not configured
+    app.get("/api/*", (_req, res) => {
+      res.status(503).json({
+        error: "Service Unavailable",
+        message: "Backend services are not configured. Please set SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY environment variables."
+      });
+    });
+  }
 
   // Error handling
   app.use((err: Error, _req: express.Request, res: express.Response, _next: express.NextFunction) => {
@@ -99,7 +114,12 @@ export function createServer() {
 export const app = createServer();
 
 // Start the server
-const port = process.env.PORT || 3001; // Changed from 3000 to 3001 to match Vite proxy config
+const port = process.env.PORT || 3001;
 app.listen(port, () => {
-  // server is running
+  console.log(`Server running on port ${port}`);
+  if (process.env.SUPABASE_URL) {
+    console.log('Supabase configured ✓');
+  } else {
+    console.log('Warning: Supabase not configured. API routes will return 503.');
+  }
 });
