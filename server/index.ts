@@ -1,9 +1,15 @@
 // Load environment variables FIRST before any other imports
-import 'dotenv/config';
+import dotenv from 'dotenv';
+import path from 'path';
 
-// Debug: Check if dotenv loaded correctly
-console.log('SERVER: process.cwd() =', process.cwd());
-console.log('SERVER: process.env.SUPABASE_URL =', process.env.SUPABASE_URL ? 'SET' : 'NOT SET');
+// Explicitly load .env file
+const envPath = path.resolve(process.cwd(), '.env');
+console.log('DEBUG: Loading .env from:', envPath);
+const result = dotenv.config({ path: envPath });
+console.log('DEBUG: dotenv.config result:', result.error ? `ERROR: ${result.error.message}` : 'SUCCESS');
+if (result.parsed) {
+  console.log('DEBUG: Loaded env keys:', Object.keys(result.parsed).join(', '));
+}
 
 import express from "express";
 import cors from "cors";
