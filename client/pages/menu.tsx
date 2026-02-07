@@ -81,9 +81,12 @@ const MenuPage = () => {
           </span>
         </div>
         <p className="mt-2 text-gray-600 text-sm">{item.description}</p>
-        <button 
+        <button
           className="mt-4 w-full bg-primary-600 hover:bg-primary-700 text-white py-2 px-4 rounded-lg transition-colors"
-          onClick={() => console.log('Added to cart:', item.name)}
+          onClick={() => {
+            // Handle add to cart functionality
+            alert(`${item.name} added to order`);
+          }}
         >
           Add to Order
         </button>
