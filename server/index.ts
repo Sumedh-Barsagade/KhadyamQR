@@ -25,15 +25,17 @@ export function createServer() {
       credentials: true
     }));
   } else {
-    // In production, only allow specific origins
+    // In production, allow configured origins + Netlify preview/production URLs
+    const extraOrigins = (process.env.ALLOWED_ORIGINS || '').split(',').map((o: string) => o.trim()).filter(Boolean);
     const allowedOrigins = [
-      'https://your-production-domain.com',
-      // Add other production domains here
+      'https://khadyam-qr-menu-system.netlify.app',
+      'https://khadyamqr.netlify.app',
+      ...extraOrigins,
     ];
 
     app.use(cors({
       origin: function(origin, callback) {
-        if (!origin || allowedOrigins.includes(origin)) {
+        if (!origin || allowedOrigins.includes(origin) || origin.endsWith('.netlify.app')) {
           return callback(null, true);
         }
         const msg = 'The CORS policy for this site does not allow access from the specified Origin.';
