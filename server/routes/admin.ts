@@ -91,6 +91,8 @@ export const listRestaurants: RequestHandler = async (_req, res) => {
 };
 
 export const createRestaurant: RequestHandler = async (req, res) => {
+  if (!ensureSupabaseConfigured(res)) return;
+
   const { name, slug, logo_base64 } = req.body as {
     name: string;
     slug: string;
@@ -123,6 +125,8 @@ export const createRestaurant: RequestHandler = async (req, res) => {
 };
 
 export const uploadQrAndSave: RequestHandler = async (req, res) => {
+  if (!ensureSupabaseConfigured(res)) return;
+
   const { slug, restaurant_id, qr_base64 } = req.body as {
     slug: string;
     restaurant_id: string;
@@ -166,6 +170,8 @@ export const uploadQrAndSave: RequestHandler = async (req, res) => {
 };
 
 export const deleteRestaurant: RequestHandler = async (req, res) => {
+  if (!ensureSupabaseConfigured(res)) return;
+
   const { id } = req.params;
   if (!id) return res.status(400).json({ error: "id required" });
 
@@ -178,6 +184,8 @@ export const deleteRestaurant: RequestHandler = async (req, res) => {
 };
 
 export const resetRestaurantPassword: RequestHandler = async (req, res) => {
+  if (!ensureSupabaseConfigured(res)) return;
+
   const { email, new_password } = req.body as {
     email: string;
     new_password: string;
@@ -260,6 +268,8 @@ export const resetRestaurantPassword: RequestHandler = async (req, res) => {
 };
 
 export const toggleRestaurantStatus: RequestHandler = async (req, res) => {
+  if (!ensureSupabaseConfigured(res)) return;
+
   const { id } = req.params;
   const { active } = req.body as { active: boolean };
   if (!id) return res.status(400).json({ error: "id required" });
@@ -275,6 +285,8 @@ export const toggleRestaurantStatus: RequestHandler = async (req, res) => {
 };
 
 export const createRestaurantLogin: RequestHandler = async (req, res) => {
+  if (!ensureSupabaseConfigured(res)) return;
+
   const { restaurant_id, email, password } = req.body as {
     restaurant_id: string;
     email: string;
