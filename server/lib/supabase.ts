@@ -7,62 +7,46 @@ const url = process.env.NEXT_PUBLIC_SUPABASE_URL ||
             
 const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
-// Validate required environment variables
-if (!url) {
-  throw new Error(
-    'Missing Supabase URL. Please set SUPABASE_URL in your .env file.'
-  );
-}
+// Create a null client if credentials are missing (will be handled in routes)
+let supabaseAdmin: any = null;
 
-if (!serviceKey) {
-  throw new Error(
-    'Missing Supabase Service Role Key. Please set SUPABASE_SERVICE_ROLE_KEY in your .env file.'
-  );
-}
-
-// Create Supabase client with enhanced error handling
-export const supabaseAdmin = (() => {
+// Validate and initialize if credentials are available
+if (url && serviceKey) {
   try {
-    const client = createClient(url, serviceKey, {
+    supabaseAdmin = createClient(url, serviceKey, {
       auth: {
         persistSession: false,
         autoRefreshToken: false,
       },
     });
     
-    // Test the connection
-    // Test the connection
+    // Test the connection (non-blocking)
     (async () => {
       try {
-        const { error } = await client.from('restaurants').select('*').limit(1);
+        const { error } = await supabaseAdmin.from('restaurants').select('*').limit(1);
         if (error) {
-          console.error('Supabase connection test failed:', error);
+          console.warn('Supabase connection test warning:', error.message);
           if (error.code === '42501') {
-            console.error('Permission denied. Please check if your service role key has the correct permissions.');
+            console.warn('Permission denied. Please check if your service role key has the correct permissions.');
           } else if (error.code === '42P01') {
-            console.error('Table not found. Please ensure the "restaurants" table exists in your Supabase database.');
+            console.warn('Table not found. Please ensure the "restaurants" table exists in your Supabase database.');
           }
         } else {
-          // Successfully connected to Supabase
+          console.log('Supabase connection successful ✓');
         }
       } catch (err) {
-        console.error('Error testing Supabase connection:', err);
-        if (err instanceof Error) {
-          console.error('Error details:', {
-            message: err.message,
-            name: err.name,
-            stack: err.stack
-          });
-        }
+        console.warn('Error testing Supabase connection:', err instanceof Error ? err.message : String(err));
       }
     })();
-    
-    return client;
   } catch (error) {
-    console.error('Failed to initialize Supabase client:', error);
-    throw error;
+    console.error('Failed to initialize Supabase client:', error instanceof Error ? error.message : String(error));
   }
-})();
+} else {
+  console.warn('Supabase credentials not configured. Set SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY.');
+}
 
-// Helper function to get the Supabase URL
+// Helper function to get the base URL
 export const getSupabaseUrl = () => url;
+
+// Export the client (may be null if not configured)
+export { supabaseAdmin };
