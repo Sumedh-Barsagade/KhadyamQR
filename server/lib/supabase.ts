@@ -1,3 +1,5 @@
+// MUST load dotenv before any other imports that need env vars
+import 'dotenv/config';
 import { createClient } from "@supabase/supabase-js";
 
 // Get environment variables with fallbacks
