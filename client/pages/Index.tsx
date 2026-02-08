@@ -25,7 +25,7 @@ const itemVariants = {
     rotateX: 0,
     transition: {
       duration: 0.6,
-      ease: "easeOut",
+      ease: "easeOut" as const,
     },
   },
 };
@@ -36,7 +36,7 @@ const floatingVariants = {
     transition: {
       duration: 3,
       repeat: Infinity,
-      ease: "easeInOut",
+      ease: "easeInOut" as const,
     },
   },
 };
@@ -222,7 +222,7 @@ export default function Index() {
                   transition: {
                     duration: 4,
                     repeat: Infinity,
-                    ease: "easeInOut",
+                    ease: "easeInOut" as const,
                   },
                 }}
               />

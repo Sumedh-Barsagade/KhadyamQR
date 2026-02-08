@@ -46,11 +46,11 @@ git push -u origin main
 ### Steps:
 1. Go to https://app.netlify.com/start
 2. Click "Import from Git" → Select GitHub
-3. Choose `KhadyamQR` repository
-4. **Build settings:**
-   - Build command: `pnpm build`
+3. Choose `KhadyamQR` repository (or your fork)
+4. **Build settings** (optional; `netlify.toml` already sets these):
+   - Build command: `pnpm run build:client`
    - Publish directory: `dist/spa`
-   - Functions directory: `netlify/functions` (already configured)
+   - Functions directory: `netlify/functions`
 
 5. **Environment variables:**
    ```
