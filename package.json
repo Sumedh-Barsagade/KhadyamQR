@@ -12,7 +12,7 @@
     "dev:client": "vite",
     "dev:server": "tsx watch server/index.ts",
     "build": "npm run build:client && npm run build:server",
-    "build:client": "vite build",
+    "build:client": "node scripts/ensure-vite-env.cjs",
     "build:server": "tsc -p tsconfig.server.json",
     "start": "NODE_ENV=production node dist/server/index.js",
     "test": "playwright test",

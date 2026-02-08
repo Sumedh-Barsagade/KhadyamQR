@@ -24,20 +24,17 @@ const getEnv = (name: string) => {
   return undefined;
 };
 
-// Get Supabase configuration from environment
+// Get Supabase configuration from environment (VITE_* are baked in at build time by scripts/ensure-vite-env.cjs)
 const supabaseUrl = getEnv("VITE_SUPABASE_URL") || getEnv("NEXT_PUBLIC_SUPABASE_URL");
 const supabaseAnonKey = getEnv("VITE_SUPABASE_ANON_KEY") || getEnv("NEXT_PUBLIC_SUPABASE_ANON_KEY");
 
-// Validate configuration
+// Validate configuration (VITE_* vars are baked in at build time — set them in Netlify env and redeploy)
 if (!supabaseUrl || !supabaseAnonKey) {
-  const errorMessage = 'Missing Supabase configuration. Please check your environment variables.';
-  console.error(errorMessage, { 
-    supabaseUrl: supabaseUrl ? '✅ Set' : '❌ Missing', 
+  const errorMessage =
+    'Missing Supabase configuration. Set VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY in your host (e.g. Netlify → Site settings → Environment variables), then redeploy.';
+  console.error(errorMessage, {
+    supabaseUrl: supabaseUrl ? '✅ Set' : '❌ Missing',
     supabaseAnonKey: supabaseAnonKey ? '✅ Set' : '❌ Missing',
-    env: {
-      VITE_SUPABASE_URL: getEnv("VITE_SUPABASE_URL") ? '✅ Set' : '❌ Missing',
-      VITE_SUPABASE_ANON_KEY: getEnv("VITE_SUPABASE_ANON_KEY") ? '✅ Set' : '❌ Missing'
-    }
   });
   throw new Error(errorMessage);
 }

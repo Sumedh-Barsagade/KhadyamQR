@@ -52,14 +52,13 @@ git push -u origin main
    - Publish directory: `dist/spa`
    - Functions directory: `netlify/functions`
 
-5. **Environment variables:**
-   ```
-   VITE_SUPABASE_URL=https://dshrfgqoarhwpbhbdobt.supabase.co
-   VITE_SUPABASE_ANON_KEY=eyJhbGc...
-   SUPABASE_URL=https://dshrfgqoarhwpbhbdobt.supabase.co
-   SUPABASE_SERVICE_ROLE_KEY=eyJhbGc...
-   PING_MESSAGE=ping pong
-   ```
+5. **Environment variables** (required for build):
+   - In Netlify: **Site configuration → Environment variables** (or use Netlify’s Supabase integration).
+   - The app supports **either** naming scheme:
+     - **Option A:** `SUPABASE_URL` and `SUPABASE_ANON_KEY` (e.g. from Netlify’s Supabase integration). The build script copies these into `VITE_SUPABASE_*` for the client.
+     - **Option B:** Set explicitly: `VITE_SUPABASE_URL`, `VITE_SUPABASE_ANON_KEY`, `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY`.
+   - Get values from [Supabase Dashboard → Settings → API](https://supabase.com/dashboard/project/_/settings/api).
+   - After changing env vars, **Trigger deploy → Deploy site** (or push a commit) so the build runs again.
 
 6. Click "Deploy site"
 
